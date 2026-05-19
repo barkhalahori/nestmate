@@ -1,5 +1,7 @@
 package com.nestmate.user_service.controller;
 
+import com.nestmate.user_service.dto.LoginRequest;
+import com.nestmate.user_service.dto.LoginResponse;
 import com.nestmate.user_service.dto.RegisterRequest;
 import com.nestmate.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +20,10 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@RequestBody RegisterRequest request){
         return userService.register(request);
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request){
+        return userService.login(request);
     }
 }
