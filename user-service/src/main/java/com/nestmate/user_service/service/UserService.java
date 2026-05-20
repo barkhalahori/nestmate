@@ -1,9 +1,7 @@
 package com.nestmate.user_service.service;
 
 import com.nestmate.user_service.config.JwtUtil;
-import com.nestmate.user_service.dto.LoginRequest;
-import com.nestmate.user_service.dto.LoginResponse;
-import com.nestmate.user_service.dto.RegisterRequest;
+import com.nestmate.user_service.dto.*;
 import com.nestmate.user_service.entity.User;
 import com.nestmate.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +47,17 @@ public class UserService {
         String refreshToken = jwtUtil.generateRefreshToken(request.getEmail());
 
         return new LoginResponse(accessToken,refreshToken,"Login Successful");
+    }
+
+    public RefreshResponse refresh(RefreshRequest request){
+        if(jwtUtil.isTokenValid(request.getRefreshToken())){
+            String email = jwtUtil.extractEmail(request.getRefreshToken());
+            String accessToken = jwtUtil.generateAccessToken(email);
+            return new RefreshResponse(accessToken,"Access Token generated successfully!");
+        }
+        else{
+            throw new RuntimeException("Invalid or expired refresh token");
+        }
     }
 
 }
