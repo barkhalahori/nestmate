@@ -5,6 +5,7 @@ import com.nestmate.listing_service.dto.ListingResponse;
 import com.nestmate.listing_service.entity.Listing;
 import com.nestmate.listing_service.repository.ListingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,9 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class ListingService {
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
     private ListingRepository listingRepository;
@@ -34,6 +38,8 @@ public class ListingService {
         listing.setElectricityIncluded(request.isElectricityIncluded());
 
         Listing saved = listingRepository.save(listing);
+
+        kafkaTemplate.send("listing-created","New listing created by userId: "+ saved.getUserId()+" at location: "+ saved.getLocation());
         return mapToResponse(saved);
     }
 
