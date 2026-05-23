@@ -43,7 +43,7 @@ public class UserService {
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new RuntimeException("Invalid Password");
         }
-        String accessToken = jwtUtil.generateAccessToken(request.getEmail());
+        String accessToken = jwtUtil.generateAccessToken(request.getEmail(), user.getRole());
         String refreshToken = jwtUtil.generateRefreshToken(request.getEmail());
 
         return new LoginResponse(accessToken,refreshToken,"Login Successful");
@@ -52,7 +52,10 @@ public class UserService {
     public RefreshResponse refresh(RefreshRequest request){
         if(jwtUtil.isTokenValid(request.getRefreshToken())){
             String email = jwtUtil.extractEmail(request.getRefreshToken());
-            String accessToken = jwtUtil.generateAccessToken(email);
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(()-> new RuntimeException("User not found"));
+
+            String accessToken = jwtUtil.generateAccessToken(email, user.getRole());
             return new RefreshResponse(accessToken,"Access Token generated successfully!");
         }
         else{

@@ -17,12 +17,13 @@ public class JwtUtil {
     private final long ACCESS_TOKEN_EXPIRY  = 1000 * 60 * 15;           // 15 minutes
     private final long REFRESH_TOKEN_EXPIRY = 1000 * 60 * 60 * 24 * 7;  // 7 days
 
-    public String generateAccessToken(String email) {
+    public String generateAccessToken(String email, String role) {
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRY))
                 .claim("type", "access")
+                .claim("role", role)
                 .signWith(key)
                 .compact();
     }

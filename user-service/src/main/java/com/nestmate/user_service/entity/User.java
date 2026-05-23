@@ -18,6 +18,6 @@ public class User {
     private String email;
 
     private String password;
-    private String role; //"STUDENT", "WORKING_PROFESSIONAL"
+    private String role; //"SEEKER", "LANDLORD"
 
 }
