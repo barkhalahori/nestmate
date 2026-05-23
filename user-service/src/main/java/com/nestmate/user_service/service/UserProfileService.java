@@ -13,7 +13,8 @@ public class UserProfileService {
     private UserProfileRepository userProfileRepository;
 
     public UserProfileResponse saveProfile(UserProfileRequest request){
-        UserProfile userProfile = new UserProfile();
+        UserProfile userProfile = userProfileRepository.findProfileByUserId(request.getUserId())
+                        .orElse(new UserProfile());
 
         userProfile.setAcRequired(request.isAcRequired());
         userProfile.setUserId(request.getUserId());

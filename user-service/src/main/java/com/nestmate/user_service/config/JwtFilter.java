@@ -21,9 +21,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
@@ -34,6 +31,10 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
+
+        System.out.println("Token received: " + token);
+        System.out.println("Is valid: " + jwtUtil.isTokenValid(token));
+
         if(!jwtUtil.isTokenValid(token)){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
@@ -41,7 +42,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String email = jwtUtil.extractEmail(token);
 
-        userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
+//        userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
+
+        if (email == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
         UserDetails userDetails = User.withUsername(email)
                 .password("")

@@ -91,10 +91,8 @@
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.nestmate</groupId>
-			<artifactId>user-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 
