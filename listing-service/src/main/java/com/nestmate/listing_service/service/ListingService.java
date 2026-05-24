@@ -39,7 +39,13 @@ public class ListingService {
 
         Listing saved = listingRepository.save(listing);
 
-        kafkaTemplate.send("listing-created","New listing created by userId: "+ saved.getUserId()+" at location: "+ saved.getLocation());
+        try {
+            kafkaTemplate.send("listing-created",
+                    "New listing created by userId: " + saved.getUserId() +
+                            " at location: " + saved.getLocation());
+        } catch (Exception e) {
+            System.out.println("Kafka not available, skipping notification: " + e.getMessage());
+        }
         return mapToResponse(saved);
     }
 

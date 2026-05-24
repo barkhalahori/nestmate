@@ -17,7 +17,7 @@ public class ListingResponse {
     private String location;
     private Double rent;
     private int totalBeds;
-    private boolean isVegetarian;
+    private boolean vegetarian;
     private String preferredGender;
     private boolean acAvailable;
     private boolean electricityIncluded;
