@@ -3,6 +3,10 @@ package com.nestmate.matching_service.service;
 import com.nestmate.matching_service.dto.ListingResponse;
 import com.nestmate.matching_service.dto.UserProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,20 +23,34 @@ public class MatchingService {
     private static final String USER_SERVICE_URL = "http://localhost:8081";
     private static final String LISTING_SERVICE_URL = "http://localhost:8082";
 
-    public List<ListingResponse> getMatchedListings(Long userId, String token){
-        UserProfileResponse profile = restTemplate.getForObject(
-                USER_SERVICE_URL+"/profile"+userId,
+    public List<ListingResponse> getMatchedListings(Long userId, String token) {
+        System.out.println("Token being sent: " + token);
+        // Step 1 - fetch profile WITH token
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization",token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<UserProfileResponse> profileResponse = restTemplate.exchange(
+                USER_SERVICE_URL + "/profile/" + userId,
+                HttpMethod.GET,
+                entity,
                 UserProfileResponse.class
         );
+        UserProfileResponse profile = profileResponse.getBody();
 
-        ListingResponse[] listings = restTemplate.getForObject(
-                LISTING_SERVICE_URL+"/listings",
+        // Step 2 - fetch all listings WITH token
+        ResponseEntity<ListingResponse[]> listingsResponse = restTemplate.exchange(
+                LISTING_SERVICE_URL + "/listings",
+                HttpMethod.GET,
+                entity,
                 ListingResponse[].class
         );
+        ListingResponse[] listings = listingsResponse.getBody();
 
+        // Step 3 - score and sort
         return Arrays.stream(listings)
                 .filter(l -> l.getAvailableBeds() > 0)
-                .filter(l -> l.getStatus().equals("AVAILABLE"))
+                .filter(l -> "AVAILABLE".equals(l.getStatus()))
                 .map(l -> {
                     double score = calculateScore(profile, l);
                     l.setScore(score);

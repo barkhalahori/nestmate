@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+//@Configuration: This class contains beans/configuration for the application.
 @Configuration
 public class SecurityConfig {
     @Bean
@@ -23,6 +24,8 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
+    //How should incoming HTTP requests be secured?
+    //CSRF - Cross Site Request Forgery
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

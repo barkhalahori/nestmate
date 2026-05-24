@@ -67,4 +67,11 @@ public class ListingService {
 
         return response;
     }
+
+    public List<ListingResponse> getAllListings(){
+        return listingRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
 }

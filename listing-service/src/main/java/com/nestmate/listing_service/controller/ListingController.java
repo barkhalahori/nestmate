@@ -24,4 +24,9 @@ public class ListingController {
     public List<ListingResponse> getAllListings(@PathVariable Long userId){
         return listingService.getListingsByUser(userId);
     }
+
+    @GetMapping
+    public List<ListingResponse> getAllListings(){
+        return listingService.getAllListings();
+    }
 }
