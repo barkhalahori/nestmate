@@ -6,19 +6,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
 public class ChatbotService {
 
-    @Value("${gemini.api.key}")
-    private String apiKey;
+    @Value("${ollama.url}")
+    private String ollamaUrl;
 
     private final RestClient restClient = RestClient.create();
 
     public ChatResponse chat(ChatRequest request) {
-        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=" + apiKey;
 
         String systemContext = """
                 You are a helpful assistant for NestMate, a flatmate finder platform.
@@ -31,27 +29,19 @@ public class ChatbotService {
                 """;
 
         Map<String, Object> body = Map.of(
-                "contents", List.of(
-                        Map.of("parts", List.of(
-                                Map.of("text", systemContext + "\n\nUser: " + request.getMessage())
-                        ))
-                )
+                "model", "llama3.2",
+                "prompt", systemContext + "\n\nUser: " + request.getMessage(),
+                "stream", false
         );
 
         Map response = restClient.post()
-                .uri(url)
+                .uri(ollamaUrl + "/api/generate")
                 .header("Content-Type", "application/json")
                 .body(body)
                 .retrieve()
                 .body(Map.class);
 
-        List candidates = (List) response.get("candidates");
-        Map firstCandidate = (Map) candidates.get(0);
-        Map content = (Map) firstCandidate.get("content");
-        List parts = (List) content.get("parts");
-        Map firstPart = (Map) parts.get(0);
-        String text = (String) firstPart.get("text");
-
+        String text = (String) response.get("response");
         return new ChatResponse(text);
     }
 }
