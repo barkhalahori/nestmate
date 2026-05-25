@@ -1,0 +1,13 @@
+# Secrets
+**/application.properties
+
+# IDE
+.idea/
+*.iml
+
+# Maven
+**/target/
+
+# Env files
+**/.env
+*.env
