@@ -199,12 +199,6 @@ Frontend runs at `http://localhost:3000`
 
 ---
 
-## Screenshots
-
-> Register as Seeker or Landlord → Login → Role-based Dashboard → Post Listings (Landlord) → View AI Matches (Seeker) → Get Verified via Stripe → Chat with AI
-
----
-
 ## Author
 
 **Barkha Lahori**
