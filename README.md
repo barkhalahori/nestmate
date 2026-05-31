@@ -2,7 +2,7 @@
 
 A backend-heavy microservices platform for finding compatible flatmates,
 built with Spring Boot, Kafka, JWT auth, Stripe payments, and ML-based matching.
-
+npx
 ## Microservices
 
 | Service | Port | Description |

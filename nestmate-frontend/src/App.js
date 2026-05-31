@@ -5,6 +5,9 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import NewListing from './pages/NewListing';
 import Match from './pages/Match';
+import Profile from './pages/Profile';
+import Chatbot from './components/Chatbot';
+import Payment from './pages/Payment';
 
 function App(){
   return (
@@ -16,7 +19,10 @@ function App(){
         <Route path="/listings/new" element={<NewListing />} />
         <Route path="/match" element={<Match />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        /<Route path="/payment" element={<Payment />} />
       </Routes>
+      <Chatbot />
     </BrowserRouter>
   );
 }

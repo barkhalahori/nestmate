@@ -25,6 +25,16 @@ public class PaymentService {
     private String stripeSecretKey;
 
     public PaymentResponse createPaymentIntent(PaymentRequest request) throws StripeException {
+        List<Payment> existing = paymentRepository.findByUserId(request.getUserId());
+        for (Payment p : existing) {
+            if (p.getStatus().equals("SUCCESS")) {
+                throw new RuntimeException("User is already verified!");
+            }
+            if (p.getStatus().equals("PENDING")) {
+                throw new RuntimeException("You already have a pending payment. Please complete it first.");
+            }
+        }
+
         //initialize Stripe with secret key
         Stripe.apiKey = stripeSecretKey;
 

@@ -36,6 +36,14 @@ public class JwtFilter extends OncePerRequestFilter {
         //Token is being extracted
         String token = authHeader.substring(7);
 
+        System.out.println("=== JWT FILTER DEBUG ===");
+        System.out.println("Request URI: " + request.getRequestURI());
+        System.out.println("Token first 50 chars: " + token.substring(0, Math.min(50, token.length())));
+        System.out.println("Is valid: " + jwtUtil.isTokenValid(token));
+        String emailDebug = jwtUtil.extractEmail(token);
+        System.out.println("Email extracted: " + emailDebug);
+        System.out.println("========================");
+
 //        System.out.println("Token received: " + token);
 //        System.out.println("Is valid: " + jwtUtil.isTokenValid(token));
 

@@ -52,15 +52,24 @@ function Dashboard() {
           )}
 
           {user.role === 'SEEKER' && (
+            <>
             <div style={styles.card} onClick={() => navigate('/match')}>
               <div style={styles.cardIcon}>🤖</div>
               <h3 style={styles.cardTitle}>Find Matches</h3>
               <p style={styles.cardDesc}>See AI-ranked listings compatible with your preferences.</p>
               <button style={styles.btn}>View Matches →</button>
             </div>
+
+            <div style={styles.card} onClick={() => navigate('/payment')}>
+              <div style={styles.cardIcon}>✅</div>
+              <h3 style={styles.cardTitle}>Get Verified</h3>
+              <p style={styles.cardDesc}>Pay ₹99 to get a verified badge and 3x more responses.</p>
+              <button style={styles.btn}>Verify Now →</button>
+            </div>
+            </>
           )}
 
-          <div style={styles.card} onClick={() => navigate('/register')}>
+          <div style={styles.card} onClick={() => navigate('/profile')}>
             <div style={styles.cardIcon}>👤</div>
             <h3 style={styles.cardTitle}>My Profile</h3>
             <p style={styles.cardDesc}>Update your lifestyle preferences for better matching.</p>

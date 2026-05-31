@@ -24,4 +24,4 @@ export const saveProfile = (data) => axios.post(`${API_BASE}/profile`, data, get
 export const getProfile = (userId) => axios.get(`${API_BASE}/profile/${userId}`, getAuthHeader());
 
 // Payments
-export const createPayment = (data) => axios.post(`http://localhost:8085/payments/create-intent`, data, getAuthHeader());
+export const createPayment = (data) => axios.post(`http://localhost:8080/payments/create-intent`, data, getAuthHeader());
